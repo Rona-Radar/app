@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,6 +48,10 @@ public class MapsActivity extends FragmentActivity implements
     private Location lastLocation;
     private Marker currentUserLocationMark;
     private static final int Request_User_Location_Code = 99;
+    private double latitude, longitude;
+    private int proximityRadius = 10000;
+
+    LatLng latLng2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +79,17 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
+        Object transferData[] = new Object[2];
+        FindNearbySites getNearbyPlaces = new FindNearbySites();
+        Object transferData_doctor[] = new Object[2];
+        FindNearbySites getNearbyPlacesDoctor = new FindNearbySites();
+
+        Object transferDataSearch[] = new Object[2];
+        FindNearbySites getNearbyPlacesSearch = new FindNearbySites();
+        Object transferData_doctorSearch[] = new Object[2];
+        FindNearbySites getNearbyPlacesDoctorSearch = new FindNearbySites();
+
         switch(v.getId())
         {
             case R.id.search:
@@ -95,13 +109,12 @@ public class MapsActivity extends FragmentActivity implements
                             for(int i = 0; i < addressList.size(); ++i)
                             {
                                 Address userAddress = addressList.get(i);
-                                LatLng latLng2 = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+                                latLng2 = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
                                 userMarkerOptions.position(latLng2);
                                 userMarkerOptions.title(address);
                                 userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                                 mMap.addMarker(userMarkerOptions);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
-
                             }
                         }
                     }
@@ -115,7 +128,51 @@ public class MapsActivity extends FragmentActivity implements
                     Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.refresh:
+                mMap.clear();
+                String url = getUrl(latitude, longitude, "hospital");
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for nearby hospitals and doctors", Toast.LENGTH_SHORT).show();
+
+                String doctor_url = getUrl(latitude, longitude, "doctor");
+                transferData_doctor[0] = mMap;
+                transferData_doctor[1] = doctor_url;
+                getNearbyPlacesDoctor.execute(transferData_doctor);
+
+                Log.d("isNull", String.valueOf(latLng2 == null));
+                if(latLng2 != null)
+                {
+                    String urlSearch = getUrl(latLng2.latitude, latLng2.longitude, "hospital");
+                    transferDataSearch[0] = mMap;
+                    transferDataSearch[1] = urlSearch;
+                    getNearbyPlacesSearch.execute(transferDataSearch);
+
+                    String doctorUrlSearch = getUrl(latLng2.latitude, latLng2.longitude, "doctor");
+                    transferData_doctorSearch[0] = mMap;
+                    transferData_doctorSearch[1] = doctorUrlSearch;
+                    getNearbyPlacesDoctorSearch.execute(transferData_doctorSearch);
+
+                }
+
+                break;
+
+
         }
+    }
+
+    private String getUrl(double latitude, double longitude, String place)
+    {
+        StringBuilder googleUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googleUrl.append("location=" + latitude + "," + longitude);
+        googleUrl.append("&radius=" + proximityRadius);
+        googleUrl.append("&type=" + place);
+        googleUrl.append("&key=" + "AIzaSyC0F8sHChEXj2-LBKTYqpitpLCyE63x2h8");
+
+        Log.d("Link", "url=" + googleUrl.toString());
+
+        return googleUrl.toString();
     }
 
     public boolean checkUserLocationPermission()
@@ -197,6 +254,11 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
+
         lastLocation = location;
 
         if(currentUserLocationMark != null)
