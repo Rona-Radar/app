@@ -1,5 +1,7 @@
 package com.example.ronaradar;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +37,7 @@ public class DataParser {
             googlePlaceMap.put("place_name", nameOfPlace);
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
-            googlePlaceMap.put("long", longitude);
+            googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);
 
         }
