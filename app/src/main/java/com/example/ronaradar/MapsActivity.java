@@ -168,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements
         googleUrl.append("location=" + latitude + "," + longitude);
         googleUrl.append("&radius=" + proximityRadius);
         googleUrl.append("&type=" + place);
-        googleUrl.append("&key=" + "AIzaSyC0F8sHChEXj2-LBKTYqpitpLCyE63x2h8");
+        googleUrl.append("&key=" + "");
 
         Log.d("Link", "url=" + googleUrl.toString());
 
