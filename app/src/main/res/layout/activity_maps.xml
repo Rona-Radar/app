@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/second_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MapsActivity"
+            tools:layout="@layout/activity_maps" />
+
+        <EditText
+            android:id="@+id/location_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:textColorHint="@color/black"
+            android:hint="Enter a location here"></EditText>
+
+        <Button
+            android:id="@+id/updates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="onClick"
+            android:text="Live Updates" />
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:layout_alignBottom="@+id/location_search"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="-45dp"
+            android:text="Search" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
