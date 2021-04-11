@@ -1,6 +1,7 @@
 package com.example.ronaradar;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +44,8 @@ public class FindNearbySites extends AsyncTask<Object, String, String> {
         DataParser dataParser = new DataParser();
         nearbyPlacesList = dataParser.parse(s);
         displayNearbyPlaces(nearbyPlacesList);
+
+
     }
 
     private void displayNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList)
@@ -56,12 +59,15 @@ public class FindNearbySites extends AsyncTask<Object, String, String> {
             double lat = Double.parseDouble(googleNearbyPlace.get("lat"));
             double lng = Double.parseDouble(googleNearbyPlace.get("lng"));
 
+            Log.d("lat", String.valueOf(lat));
+            Log.d("Long", String.valueOf(lng));
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(nameOfPlace + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
         }
     }
 
