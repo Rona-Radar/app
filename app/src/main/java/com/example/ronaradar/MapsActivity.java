@@ -1,5 +1,6 @@
 package com.example.ronaradar;
 
+import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,6 +54,20 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.maps);
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch(item.getItemId()) {
+                case R.id.feed:
+                    startActivity(new Intent(this, FeedActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.maps:
+                    return true;
+            }
+            return false;
+        });
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
