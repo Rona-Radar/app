@@ -96,11 +96,13 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     public void onClick(View v) {
+        // nearby doctors + hospitals in current location
         Object transferData[] = new Object[2];
         FindNearbySites getNearbyPlaces = new FindNearbySites();
         Object transferData_doctor[] = new Object[2];
         FindNearbySites getNearbyPlacesDoctor = new FindNearbySites();
-
+               
+        // nearby doctors + hospitals in requested search location
         Object transferDataSearch[] = new Object[2];
         FindNearbySites getNearbyPlacesSearch = new FindNearbySites();
         Object transferData_doctorSearch[] = new Object[2];
@@ -108,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements
 
         switch(v.getId())
         {
+            // search bar
             case R.id.search:
                 EditText addressField = (EditText) findViewById(R.id.location_search);
                 String address = addressField.getText().toString();
@@ -144,7 +147,9 @@ public class MapsActivity extends FragmentActivity implements
                     Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            // plotting locations with refresh button
             case R.id.refresh:
+                // current location
                 mMap.clear();
                 String url = getUrl(latitude, longitude, "hospital");
                 transferData[0] = mMap;
@@ -156,7 +161,8 @@ public class MapsActivity extends FragmentActivity implements
                 transferData_doctor[0] = mMap;
                 transferData_doctor[1] = doctor_url;
                 getNearbyPlacesDoctor.execute(transferData_doctor);
-
+                
+                // requested search location 
                 Log.d("isNull", String.valueOf(latLng2 == null));
                 if(latLng2 != null)
                 {
@@ -177,7 +183,8 @@ public class MapsActivity extends FragmentActivity implements
 
         }
     }
-
+       
+    // gets google places api link
     private String getUrl(double latitude, double longitude, String place)
     {
         StringBuilder googleUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -267,7 +274,9 @@ public class MapsActivity extends FragmentActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
+    
+                
+    // zooms camera over to the user's current location
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
