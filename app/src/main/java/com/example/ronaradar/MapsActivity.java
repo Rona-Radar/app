@@ -52,8 +52,8 @@ public class MapsActivity extends FragmentActivity implements
     private static final int Request_User_Location_Code = 99;
     private double latitude, longitude;
     private int proximityRadius = 10000;
-
-    LatLng latLng2;
+    LatLng SearchedlatLng; // latitude and longitude for searched location
+                
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +128,12 @@ public class MapsActivity extends FragmentActivity implements
                             for(int i = 0; i < addressList.size(); ++i)
                             {
                                 Address userAddress = addressList.get(i);
-                                latLng2 = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
-                                userMarkerOptions.position(latLng2);
+                                SearchedlatLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+                                userMarkerOptions.position(SearchedlatLng);
                                 userMarkerOptions.title(address);
                                 userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                                 mMap.addMarker(userMarkerOptions);
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(SearchedlatLng));
                             }
                         }
                     }
@@ -163,15 +163,15 @@ public class MapsActivity extends FragmentActivity implements
                 getNearbyPlacesDoctor.execute(transferData_doctor);
                 
                 // requested search location 
-                Log.d("isNull", String.valueOf(latLng2 == null));
-                if(latLng2 != null)
+                Log.d("isNull", String.valueOf(SearchedlatLng == null));
+                if(SearchedlatLng != null)
                 {
-                    String urlSearch = getUrl(latLng2.latitude, latLng2.longitude, "hospital");
+                    String urlSearch = getUrl(SearchedlatLng.latitude, SearchedlatLng.longitude, "hospital");
                     transferDataSearch[0] = mMap;
                     transferDataSearch[1] = urlSearch;
                     getNearbyPlacesSearch.execute(transferDataSearch);
 
-                    String doctorUrlSearch = getUrl(latLng2.latitude, latLng2.longitude, "doctor");
+                    String doctorUrlSearch = getUrl(SearchedlatLng.latitude, SearchedlatLng.longitude, "doctor");
                     transferData_doctorSearch[0] = mMap;
                     transferData_doctorSearch[1] = doctorUrlSearch;
                     getNearbyPlacesDoctorSearch.execute(transferData_doctorSearch);
