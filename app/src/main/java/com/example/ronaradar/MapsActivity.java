@@ -97,13 +97,13 @@ public class MapsActivity extends FragmentActivity implements
 
     public void onClick(View v) {
         // nearby doctors + hospitals in current location
-        Object transferData[] = new Object[2];
+        Object transferData_hospital[] = new Object[2];
         FindNearbySites getNearbyPlaces = new FindNearbySites();
         Object transferData_doctor[] = new Object[2];
         FindNearbySites getNearbyPlacesDoctor = new FindNearbySites();
                
         // nearby doctors + hospitals in requested search location
-        Object transferDataSearch[] = new Object[2];
+        Object transferData_hospitalSearch[] = new Object[2];
         FindNearbySites getNearbyPlacesSearch = new FindNearbySites();
         Object transferData_doctorSearch[] = new Object[2];
         FindNearbySites getNearbyPlacesDoctorSearch = new FindNearbySites();
@@ -152,9 +152,9 @@ public class MapsActivity extends FragmentActivity implements
                 // current location
                 mMap.clear();
                 String url = getUrl(latitude, longitude, "hospital");
-                transferData[0] = mMap;
-                transferData[1] = url;
-                getNearbyPlaces.execute(transferData);
+                transferData_hospital[0] = mMap;
+                transferData_hospital[1] = url;
+                getNearbyPlaces.execute(transferData_hospital);
                 Toast.makeText(this, "Searching for nearby hospitals and doctors", Toast.LENGTH_SHORT).show();
 
                 String doctor_url = getUrl(latitude, longitude, "doctor");
@@ -167,9 +167,9 @@ public class MapsActivity extends FragmentActivity implements
                 if(SearchedlatLng != null)
                 {
                     String urlSearch = getUrl(SearchedlatLng.latitude, SearchedlatLng.longitude, "hospital");
-                    transferDataSearch[0] = mMap;
-                    transferDataSearch[1] = urlSearch;
-                    getNearbyPlacesSearch.execute(transferDataSearch);
+                    transferData_hospitalSearch[0] = mMap;
+                    transferData_hospitalSearch[1] = urlSearch;
+                    getNearbyPlacesSearch.execute(transferData_hospitalSearch);
 
                     String doctorUrlSearch = getUrl(SearchedlatLng.latitude, SearchedlatLng.longitude, "doctor");
                     transferData_doctorSearch[0] = mMap;
